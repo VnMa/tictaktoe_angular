@@ -1,1 +1,16 @@
-<p>game works!</p>
+<p>Tic tak toe </p>
+<p>User 1: {{ user_1 }}</p>
+<p>User 2: {{ user_2 }}</p>
+<p><b>{{ next_turn }}</b> turn</p>
+
+<div class="board-container">
+    <div *ngFor="let row of board; let i = index" class="board-row">
+        <div *ngFor="let cell of row; let j = index"
+            (click)="rowClick(i,j)"
+        class="board-cell" [ngClass]="{'o-icon': cell === 'o', 'x-icon': cell === 'x'}">
+            {{ cell }}
+        </div>
+
+    </div>
+
+</div>

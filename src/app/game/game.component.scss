@@ -1,0 +1,58 @@
+ul.list-unstyle {
+    list-style-type: none;
+
+    a {
+        text-decoration: none;
+    }
+}
+
+.player-form {
+    max-width: 400px;
+}
+
+.submit {
+    border-radius: 10px;    
+    min-width: 200px;
+    padding: 5px;
+    border: 1px solid #4a4a4a;
+}
+
+.board-container {
+    margin: 5px;
+    width: 680px;
+    height: 680px;
+    border-radius: 4px;
+    background-color: #4a4a4a;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly   ;
+    align-content: space-evenly;
+
+    .board-row {
+        // padding: 5px;
+        display: flex;
+        justify-content: space-evenly   ;
+
+        // TODO: Align cell center vertical and horizontal
+        .board-cell {
+            background-color: azure;
+            min-width: 180px;
+            min-height: 180px;
+            text-align: center;
+
+            margin: auto;
+            padding: 10px 0;
+            
+            font-size: 100px;
+            font-weight: bold;
+        }
+    }
+}
+
+.o-icon {
+    color: orange;
+}
+
+.x-icon {
+    color: darkgray;
+}
