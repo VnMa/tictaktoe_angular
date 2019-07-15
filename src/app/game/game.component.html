@@ -1,7 +1,32 @@
 <p>Tic tak toe </p>
-<p>User 1: {{ user_1 }}</p>
-<p>User 2: {{ user_2 }}</p>
-<p><b>{{ next_turn }}</b> turn</p>
+<p [ngClass]="{'active': next_turn === user_1 }" >User 1: {{ user_1 }}</p>
+<p [ngClass]="{'active': next_turn === user_2 }">User 2: {{ user_2 }}</p>
+<p class='text-muted'>Observers:  {{ observers }}</p>
+<p><em>{{ status }}</em></p>
+<p><button class="btn btn-default" (click)="resetBoard()">Reset Game</button></p>
+
+<div id="gameInfo" class="modal">
+    <form action="" #gameForm="ngForm">
+        <div class="form-group">
+            <label for="">Player 1</label>
+            <input type="text" name="user_1" class="form-control" [(ngModel)]="user_1">
+            
+            </div>
+            <div class="form-group">
+            <label for=""><b>Player 2</b></label>
+            <input type="text" name="user_2" class="form-control" [(ngModel)]="user_2">
+            
+            </div>
+            <div class="form-group">
+                <label for=""><b>Size board</b></label>
+                <input type="text" name="size" placeholder="3" class="form-control" [(ngModel)]="size">
+            </div>
+            <button class="submit" (click)="createNewGame()" >New game</button>
+    </form>
+</div>
+  
+  <!-- Link to open the modal -->
+<p><button (click)="showGameInfo()">Open modal 2</button></p>
 
 <div class="board-container">
     <div *ngFor="let row of board; let i = index" class="board-row">
