@@ -1,0 +1,27 @@
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-4">
+        <ul class="list-group">
+          <li *ngFor="let room of chatrooms" class="list-group-item">
+            <a  > {{ room?.topic }}</a>
+          </li>
+        </ul>
+      </div>
+
+    <div class="col-8">
+        <div class="message-list" >
+            <div *ngFor="let message of messages" >
+                {{ message?.content}} - &nbsp; <span class=""> <b>{{message?.username}}</b></span>
+              </div>
+    
+        </div>
+        
+        <div class="form-group">
+          <input type="text" id="message" class="form-control" [(ngModel)]="message" placeholder="Say something ...">
+          <a href="javascript:;" class="btn btn-secondary" (click)="send()">Send</a>
+        </div>
+    </div>
+  </div>
+
+</div>

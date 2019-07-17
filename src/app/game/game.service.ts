@@ -1,65 +1,37 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
+import { ApiBaseService } from '../shared/api-base.service';
 
 const DEFAULT_HEADERS = new HttpHeaders({
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',
   ACCEPT: 'application/json'
 });
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class GameService {
-  readonly host = 'http://localhost:3000';
-  readonly url = 'http://localhost:3000/games';
-
-  private headers: HttpHeaders;
-  private options: {
-    headers?: HttpHeaders | { [header: string]: string | string[] };
-    observe?: 'body';
-    params?: HttpParams | { [param: string]: string | string[] };
-    reportProgress?: boolean;
-    responseType?: 'json';
-    withCredentials?: boolean;
-  };;
-
-  constructor(private api: HttpClient) { 
+  readonly url = 'games';
+  constructor(private api: ApiBaseService) { 
     
   }
 
   getGame(): Observable<any> {
-    this.buildOptions();
-    return this.api.get(this.url, this.options);
+    return this.api.get(this.url);
   }
 
   cellClick(x, y): Observable<any> {
-    this.buildOptions();
-    return this.api.post(`${this.url}/cell_click`, JSON.stringify({x, y}), this.options);
+    return this.api.post(`${this.url}/cell_click`, {x,y});
   }
 
   updateGame(body): Observable<any> {
-    this.buildOptions();
-    return this.api.post(`${this.url}/update`, JSON.stringify(body), this.options);
+    return this.api.post(`${this.url}/update`, body);
   }
 
   resetGame(): Observable<any> {
-    this.buildOptions();
-    return this.api.post(`${this.url}/reset_game`, JSON.stringify({}), this.options);
+    return this.api.post(`${this.url}/reset_game`, {});
   }
 
-  private buildOptions(options: any = {}) {
-    // Json web token
-    this.options = {
-      headers: DEFAULT_HEADERS
-    };
-    if (options.responseType) {
-      this.options.responseType = options.responseType;
-    } else {
-      this.options.responseType = 'json';
-    }
-  }
-
-  protected handleError(error: any | any): any {
-    return throwError(error);
-  }
 
 }
