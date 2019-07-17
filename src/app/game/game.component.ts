@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { GameService } from './game.service';
 import { LocalStorageService } from 'angular-2-local-storage';
 import { Router } from '@angular/router';
+import { CableService } from '../cable.service';
+import { Observable } from 'rxjs';
 
 
 declare const $: any;
@@ -20,10 +22,16 @@ export class GameComponent implements OnInit {
   status: string;
   game_end = false;
   observers: String[] = [];
+  online$: Observable<string[]>;
+  turn$: Observable<string>;
 
   constructor(private gameService: GameService,
     private router: Router,
-    private _localStorageService: LocalStorageService) { }
+    private cableService: CableService,
+    private _localStorageService: LocalStorageService) { 
+      this.online$ = this.cableService.online$;
+      this.turn$ = this.cableService.turn$;
+    }
 
   ngOnInit() {
     this.next_turn = this.user_1;
@@ -31,11 +39,17 @@ export class GameComponent implements OnInit {
 
     (async() => {
       await this.promptUserName();
-      this.loadData();
+      await this.loadData();
       this.showGameInfo();
       console.log(this.board);
     })();
     
+  }
+
+  logout() {
+    console.log('Perform logout ...');
+    this._localStorageService.remove('username');
+    this.router.navigate(['/']);
   }
 
   async promptUserName() {
@@ -48,10 +62,10 @@ export class GameComponent implements OnInit {
   // TODO: Load data from api instead
   async loadData() {
     // this.board = this.generateBoard(this.size);
-    const game = this.gameService.getGame().toPromise();
+    const game = await this.gameService.getGame().toPromise();
     console.log('game: ', game);
-    this.user_1 = game['user_1'];
-    this.user_2 = game['user_2'];
+    // this.user_1 = game['user_1'];
+    // this.user_2 = game['user_2'];
     this.next_turn = game['turn'];
     this.next_icon = game['icon'];
     this.board = game['board'];

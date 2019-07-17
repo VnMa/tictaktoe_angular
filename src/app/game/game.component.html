@@ -1,9 +1,10 @@
 <p>Tic tak toe </p>
 <p [ngClass]="{'active': next_turn === user_1 }" >User 1: {{ user_1 }}</p>
 <p [ngClass]="{'active': next_turn === user_2 }">User 2: {{ user_2 }}</p>
-<p class='text-muted'>Observers:  {{ observers }}</p>
+<p class='text-muted'>Observers:  {{ online$ | async }}</p>
 <p><em>{{ status }}</em></p>
 <p><button class="btn btn-default" (click)="resetBoard()">Reset Game</button></p>
+<p><button class="btn btn-default" (click)="logout()">Logout</button></p>
 
 <div id="gameInfo" class="modal">
     <form action="" #gameForm="ngForm">
