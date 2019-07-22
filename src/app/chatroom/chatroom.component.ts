@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatroomService } from './chatroom.service';
+import { ChatroomChannelService } from './chatroom-channel.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-chatroom',
@@ -8,10 +10,14 @@ import { ChatroomService } from './chatroom.service';
 })
 export class ChatroomComponent implements OnInit {
   chatrooms: any[];
-  messages: any[];
   message: string;
+  messages$: Observable<any[]>;
 
-  constructor(private roomService: ChatroomService) { }
+  constructor(private roomService: ChatroomService,
+      private chatChannel: ChatroomChannelService
+    ) { 
+      this.messages$ = this.roomService.messages$;
+    }
 
   ngOnInit() {
     (async() => {
@@ -27,14 +33,11 @@ export class ChatroomComponent implements OnInit {
   }
 
   async loadChatMessages() {
-    const res = await this.roomService.getMessages().toPromise();
-    console.log('res: ', res);
-    this.messages = res;
+    return await this.roomService.getMessages();
   }
 
   async send(message = this.message) {
-    const res = await this.roomService.createMessage({content: message}).toPromise();
-    console.log('res: ', res);
+    return await this.roomService.createMessage({content: message});
   }
 
 }

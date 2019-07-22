@@ -24,6 +24,43 @@ export class CableService {
     
     this.createConnection();
 
+    const channel = 'chatroom';
+    this.App[channel] = this.App.cable.subscriptions.create(
+      { channel: 'ChatroomChannel'},
+      {
+        connected: () => {
+          return this.install();
+        },
+        // Called when the WebSocket connection is closed
+        disconnected: function() {
+          return this.uninstall();
+        },
+        // Called when the subscription is rejected by the server
+        rejected: function() {
+          return this.uninstall();
+        },
+        uninstall: function() {
+          console.log('uninstall: ', this);
+        },
+        received: (data: any) => {
+          const { action } = data;
+          console.log('received', data);
+          switch(action) {
+            default: {
+
+            }
+          }
+        }
+      }
+    );
+
+    const username = this.username;
+    console.log('username: ', username);
+    this.App[channel].setData({ username });
+  }
+
+  subscribeGameChannel() {
+
     this.App[`game`] = this.App.cable.subscriptions.create(
       { channel: 'GameChannel'},
       {
@@ -45,11 +82,11 @@ export class CableService {
         },
         online: function() {
           console.log('online: ');
-          return this.perform('online', { username });
+          return this.perform('online', { username: this.username });
         },
         offline: function() {
           console.log('offline: ');
-          return this.perform('offline', { username });
+          return this.perform('offline', { username: this.username });
         },
         setData: function({username}) {
           this.username = username;
@@ -75,11 +112,7 @@ export class CableService {
         }
       }
     );
-    const username = this._localStorageService.get('username');
-    console.log('username: ', username);
-    this.App[`game`].setData({ username });
   }
-
   createConnection() {
     if (!this.App || !this.App.game ) {
       this.App = {};
@@ -95,6 +128,10 @@ export class CableService {
     this.App['game'].online();
   }
 
+
+  get username() {
+    return this._localStorageService.get('username');
+  } 
 
   cell_click(x, y) {
 

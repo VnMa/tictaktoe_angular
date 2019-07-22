@@ -11,7 +11,7 @@
 
     <div class="col-8">
         <div class="message-list" >
-            <div *ngFor="let message of messages" >
+            <div *ngFor="let message of (messages$ | async)" >
                 {{ message?.content}} - &nbsp; <span class=""> <b>{{message?.username}}</b></span>
               </div>
     
